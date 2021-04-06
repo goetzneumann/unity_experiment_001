@@ -22,8 +22,13 @@ public class AlienBehavior : MonoBehaviour
             || other.gameObject.tag == "Player"
             )
         {
-            GetComponent<ParticleSystem>().Play();
-            Debug.Log("Hit");
+            //GetComponent<ParticleSystem>().Play();
+            //GetComponent<Renderer>().enabled = false;
+            //Destroy(other.gameObject);
+            ParticleSystem exp = GetComponent<ParticleSystem>();
+            GetComponent<Renderer>().enabled = false;
+            exp.Play();
+            Destroy(gameObject, exp.main.duration);
         }
     }
 }
