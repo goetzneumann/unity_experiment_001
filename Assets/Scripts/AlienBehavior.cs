@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AlienBehavior : MonoBehaviour
 {
+    public bool wasHit = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,10 +26,16 @@ public class AlienBehavior : MonoBehaviour
             //GetComponent<ParticleSystem>().Play();
             //GetComponent<Renderer>().enabled = false;
             //Destroy(other.gameObject);
-            ParticleSystem exp = GetComponent<ParticleSystem>();
-            GetComponent<Renderer>().enabled = false;
-            exp.Play();
-            Destroy(gameObject, exp.main.duration);
+            if (!wasHit)
+            {
+                Counter.instance().addCount();
+                wasHit = true;
+
+                ParticleSystem exp = GetComponent<ParticleSystem>();
+                GetComponent<Renderer>().enabled = false;
+                exp.Play();
+                Destroy(gameObject, exp.main.duration);
+            }
         }
     }
 }
