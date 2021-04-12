@@ -7,7 +7,7 @@ public class AlienGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("Spawn", 3, 3);
+        InvokeRepeating("SpawnAliens", 3, 3);
     }
     [Range(1, 10)]
     public int alienStartLocationOffset = 1;
@@ -19,7 +19,9 @@ public class AlienGenerator : MonoBehaviour
     //public float spawnPointX = 1.0f;
 
     [Range(1, 100)]
-    public int alienSpeed = 50;
+    public int alienSpeed = 10;
+
+    public int maxAlientCount = 3;
 
     public GameObject alien;
     // Update is called once per frame
@@ -28,13 +30,24 @@ public class AlienGenerator : MonoBehaviour
 
     }
 
-    void Spawn()
+    void SpawnAliens()
+    {
+        int alienCount = Random.Range(1, maxAlientCount);
+        alienSpeed += 1;
+        for (int i = 0; i < alienCount; i++ )
+        {
+            
+            SpawnOneAlien();
+        }
+    }
+
+    void SpawnOneAlien()
     {
         int spawnPointY = Random.Range(-4, 6);
         int spawnPointX = Random.Range(-8, 8);
         GameObject clone = Instantiate(alien, transform.position + (Vector3.up * spawnPointY) + (Vector3.right * spawnPointX) + (Vector3.forward * alienStartLocationOffset)
         , alien.transform.rotation);
-        clone.GetComponent<Rigidbody>().velocity = transform.TransformDirection(Vector3.forward * alienSpeed * -1);
+        clone.GetComponent<Rigidbody>().velocity = transform.TransformDirection(Vector3.forward *(alienSpeed + Random.Range(0,20)) * -1);
         clone.SetActive(true);
     }
 }

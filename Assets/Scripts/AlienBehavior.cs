@@ -35,6 +35,7 @@ public class AlienBehavior : MonoBehaviour
                 GetComponent<Renderer>().enabled = false;
                 exp.Play();
                 Destroy(gameObject, exp.main.duration);
+                Counter.instance().AddBulletCount(20);
             }
         }
     }

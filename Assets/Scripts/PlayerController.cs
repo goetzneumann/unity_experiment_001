@@ -4,16 +4,24 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+
+    public float interval = 5f;
+    float nextTime = 0f;
+
     // Start is called before the first frame update
     void Start()
     {
+        nextTime = Time.realtimeSinceStartup + 1f;
     }
     [Range(1f, 10f)]
     public float movementSpeed = 5f;
     [Range(1, 100)]
     public int bulletSpeed = 50;
     [Range(1, 10)]
-    public int bulletStartLocationOffset = 1;
+    public int bulletForwardLocationOffset = 3;
+
+    [Range(-5f, 5f)]
+    public float bulletDownLocationOffset = 0.34f;
 
     [Range(1, 10)]
     public float maxTop = 6;
@@ -38,17 +46,7 @@ public class PlayerController : MonoBehaviour
         /*transform.position = new Vector3(
             transform.position.x+(horizontalInput * movementSpeed * Time.deltaTime),
             transform.position.y + (verticalInput * movementSpeed * Time.deltaTime), 0);*/
-        if (Input.GetButtonDown("Fire1"))
-        {
-            // Instantiate the projectile at the position and rotation of this transform
-            GameObject clone = Instantiate(projectile, transform.position + (Vector3.forward * bulletStartLocationOffset), projectile.transform.rotation);
 
-            // Give the cloned object an initial velocity along the current
-            // object's Z axis
-            clone.GetComponent<Rigidbody>().velocity = transform.TransformDirection(Vector3.forward * bulletSpeed);
-            clone.SetActive(true);
-            
-        }
 
         //When movement verticalInput > 0 and maxTop is reached set verticalInput to 0;
         if(verticalInput > 0f && transform.position.y >= maxTop)
@@ -70,5 +68,14 @@ public class PlayerController : MonoBehaviour
 
         transform.transform.Translate(movementSpeed * Vector3.up * Time.deltaTime * verticalInput, Space.World);
         transform.transform.Translate(movementSpeed * Vector3.right * Time.deltaTime * horizontalInput, Space.World);
+
+        if (nextTime<=Time.realtimeSinceStartup && !Counter.instance().IsGameOver() )
+        {
+
+            Counter.instance().AddBulletCount(1);
+
+            nextTime += interval;
+
+        }
     }
 }
