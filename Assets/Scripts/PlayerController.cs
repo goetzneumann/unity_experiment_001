@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,11 +8,13 @@ public class PlayerController : MonoBehaviour
 
     public float interval = 5f;
     float nextTime = 0f;
+    public static bool gameIsPaused;
 
     // Start is called before the first frame update
     void Start()
     {
-        nextTime = Time.realtimeSinceStartup + 1f;
+
+        nextTime = Time.time + 1f;
     }
     [Range(1f, 10f)]
     public float movementSpeed = 5f;
@@ -28,6 +31,11 @@ public class PlayerController : MonoBehaviour
 
     [Range(1, 10)]
     public float maxBottom = 4;
+
+    public bool CanShoot()
+    {
+        return Counter.instance().BulletCount() > 0 && !gameIsPaused;
+    }
 
     [Range(1, 10)]
     public float maxLeft = 8;
@@ -69,7 +77,7 @@ public class PlayerController : MonoBehaviour
         transform.transform.Translate(movementSpeed * Vector3.up * Time.deltaTime * verticalInput, Space.World);
         transform.transform.Translate(movementSpeed * Vector3.right * Time.deltaTime * horizontalInput, Space.World);
 
-        if (nextTime<=Time.realtimeSinceStartup && !Counter.instance().IsGameOver() )
+        if (nextTime<=Time.time && !Counter.instance().IsGameOver() )
         {
 
             Counter.instance().AddBulletCount(1);
@@ -77,5 +85,33 @@ public class PlayerController : MonoBehaviour
             nextTime += interval;
 
         }
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            if (gameIsPaused)
+            {
+                ResumeGame();
+            }
+            else
+            {
+                PauseGame();
+            }
+            gameIsPaused = !gameIsPaused;
+        }
+    }
+
+    void PauseGame()
+    {
+        Time.timeScale = 0;
+    }
+
+    void ResumeGame()
+    {
+        Time.timeScale = 1;
     }
 }

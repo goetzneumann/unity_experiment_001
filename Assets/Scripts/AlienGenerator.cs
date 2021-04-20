@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class AlienGenerator : MonoBehaviour
 {
+
+    public float interval = 3f;
+    float nextTime = 0f;
+
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("SpawnAliens", 3, 3);
+       
     }
     [Range(1, 10)]
     public int alienStartLocationOffset = 1;
@@ -27,7 +31,14 @@ public class AlienGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (nextTime <= Time.time && !Counter.instance().IsGameOver())
+        {
 
+            SpawnAliens();
+
+            nextTime += interval;
+
+        }
     }
 
     void SpawnAliens()

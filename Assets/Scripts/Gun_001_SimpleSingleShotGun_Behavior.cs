@@ -15,17 +15,18 @@ public class Gun_001_SimpleSingleShotGun_Behavior : MonoBehaviour
 
 
     public GameObject projectile;
+    private PlayerController player;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        player = gameObject.GetComponentInParent<PlayerController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-       if (Input.GetButtonDown("Fire1") && Counter.instance().BulletCount() > 0)
+        if (Input.GetButtonDown("Fire1") && player.CanShoot())
         {
             // Instantiate the projectile at the position and rotation of this transform
             GameObject clone = Instantiate(projectile, transform.position + (Vector3.forward * bulletForwardLocationOffset) + (Vector3.down * bulletDownLocationOffset), projectile.transform.rotation);
