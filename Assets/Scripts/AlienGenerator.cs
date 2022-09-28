@@ -5,7 +5,7 @@ using UnityEngine;
 public class AlienGenerator : MonoBehaviour
 {
 
-    public float interval = 3f;
+    public float interval = 20f;
     float nextTime = 0f;
 
     // Start is called before the first frame update
@@ -13,19 +13,15 @@ public class AlienGenerator : MonoBehaviour
     {
        
     }
-    [Range(1, 10)]
-    public int alienStartLocationOffset = 1;
+    private const int INITIAL_START_LOCATION_OFFSET = 1;
+    private int alienStartLocationOffset = INITIAL_START_LOCATION_OFFSET;
 
-    //[Range(0, 10)]
-    //public float spawnPointY = 0.0f;
+    private const int INITIAL_ALIEN_SPEED = 10;
+    private int alienSpeed = INITIAL_ALIEN_SPEED;
 
-    //[Range(1, 10)]
-    //public float spawnPointX = 1.0f;
 
-    [Range(1, 100)]
-    public int alienSpeed = 10;
-
-    public int maxAlientCount = 3;
+    private const int INITIAL_MAX_COUNT = 3;
+    private int maxAlientCount = INITIAL_MAX_COUNT;
 
     public GameObject alien;
     // Update is called once per frame
@@ -44,12 +40,22 @@ public class AlienGenerator : MonoBehaviour
     void SpawnAliens()
     {
         int alienCount = Random.Range(1, maxAlientCount);
-        alienSpeed += 1;
+        if (Random.Range(0, 5) < 1)
+        {
+            alienSpeed += 1;
+            maxAlientCount += 1;
+        }
         for (int i = 0; i < alienCount; i++ )
         {
-            
             SpawnOneAlien();
         }
+    }
+
+    private void Reset()
+    {
+        alienStartLocationOffset = INITIAL_START_LOCATION_OFFSET;
+        alienSpeed = INITIAL_ALIEN_SPEED;
+        maxAlientCount = INITIAL_MAX_COUNT;
     }
 
     void SpawnOneAlien()

@@ -7,6 +7,7 @@ public class Counter
     {
     private Text lifeCounterText;
     private Text bulletCounterText;
+    private Text gameOverText;
 
     public Counter()
     {
@@ -14,15 +15,29 @@ public class Counter
         UpdateCountDisplay();
         bulletCounterText = GameObject.Find("BulletCounterText").GetComponent<Text>();
         UpdateBulletCountDisplay();
+        gameOverText = GameObject.Find("GameOverText").GetComponent<Text>();
+        gameOverText.gameObject.SetActive(false);
     }
 
-        private int count = 5;
-    private int bulletCount = 25;
+    private static int INIT_COUNT = 10;
+    private static int INIT_BULLET_COUNT = 25;
+    private int count = INIT_COUNT;
+    private int bulletCount = INIT_BULLET_COUNT;
         
         public int LifeCount()
         {
         return count;
         }
+
+
+    public void Reset()
+    {
+        count = INIT_COUNT;
+        bulletCount = INIT_BULLET_COUNT;
+        UpdateBulletCountDisplay();
+        UpdateCountDisplay();
+        gameOverText.gameObject.SetActive(false);
+    }
 
     public int BulletCount()
     {
@@ -61,6 +76,7 @@ public class Counter
         if (count < 0)
         {
             lifeCounterText.text = "GAME OVER";
+            gameOverText.gameObject.SetActive(true);
         }
         else
         {

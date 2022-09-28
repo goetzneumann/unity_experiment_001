@@ -26,7 +26,7 @@ public class Gun_001_SimpleSingleShotGun_Behavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Fire1") && player.CanShoot())
+        if ((Input.GetButtonDown("Fire1")|| Input.GetKeyDown(KeyCode.Tab)) && player.CanShoot())
         {
             // Instantiate the projectile at the position and rotation of this transform
             GameObject clone = Instantiate(projectile, transform.position + (Vector3.forward * bulletForwardLocationOffset) + (Vector3.down * bulletDownLocationOffset), projectile.transform.rotation);

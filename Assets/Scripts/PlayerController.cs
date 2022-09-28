@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -57,11 +58,11 @@ public class PlayerController : MonoBehaviour
 
 
         //When movement verticalInput > 0 and maxTop is reached set verticalInput to 0;
-        if(verticalInput > 0f && transform.position.y >= maxTop)
+        if (verticalInput > 0f && transform.position.y >= maxTop)
         {
             verticalInput = 0;
         }
-        if (verticalInput < 0f && transform.position.y <= (maxBottom*-1))
+        if (verticalInput < 0f && transform.position.y <= (maxBottom * -1))
         {
             verticalInput = 0;
         }
@@ -77,7 +78,7 @@ public class PlayerController : MonoBehaviour
         transform.transform.Translate(movementSpeed * Vector3.up * Time.deltaTime * verticalInput, Space.World);
         transform.transform.Translate(movementSpeed * Vector3.right * Time.deltaTime * horizontalInput, Space.World);
 
-        if (nextTime<=Time.time && !Counter.instance().IsGameOver() )
+        if (nextTime <= Time.time && !Counter.instance().IsGameOver())
         {
 
             Counter.instance().AddBulletCount(1);
@@ -86,7 +87,7 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
         }
@@ -103,8 +104,21 @@ public class PlayerController : MonoBehaviour
             }
             gameIsPaused = !gameIsPaused;
         }
+
+        if (Counter.instance().IsGameOver() && Input.GetKeyDown(KeyCode.R))
+        {
+            interval = 5f;
+            nextTime = 0f;
+            ResetGame();
+        }
     }
 
+
+    void ResetGame()
+    {
+        Counter.instance().Reset();
+        
+    }
     void PauseGame()
     {
         Time.timeScale = 0;
